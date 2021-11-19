@@ -1,6 +1,7 @@
 package com.geekylikes.app.models.language;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.geekylikes.app.models.developer.Developer;
@@ -21,14 +22,15 @@ public class Language {
     private String name;
     private String tag;
 
-    @ManyToMany
-    @JoinTable(
-            name="developer_language",
-            joinColumns = @JoinColumn(name = "language_id"),
-            inverseJoinColumns = @JoinColumn(name = "developer_id")
-    )
-
-    public Set<Developer> developers = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name="developer_language",
+//            joinColumns = @JoinColumn(name = "language_id"),
+//            inverseJoinColumns = @JoinColumn(name = "developer_id")
+//    )
+//
+//    @JsonIgnoreProperties("languages")
+//    public Set<Developer> developers = new HashSet<>();
 
     public Language(){}
 

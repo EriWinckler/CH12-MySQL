@@ -9,6 +9,7 @@ import java.util.List;
 public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 
     List<Developer> findAllByCohort(Integer cohort, Sort sort);
+    List<Developer> findAllByLanguage_id(Long id);
 
 //    @Query("SELECT * FROM developer WHERE cohort = ?1 AND ?2 in language")
 //    Developer findByCohortAndLanguage(Sort sort, Integer cohort,

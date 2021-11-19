@@ -1,6 +1,7 @@
 package com.geekylikes.app.models.developer;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.geekylikes.app.models.avatar.Avatar;
 import com.geekylikes.app.models.geekout.Geekout;
@@ -11,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+//this stops to have repetition, send information only one time
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id"
@@ -25,9 +27,8 @@ public class Developer {
     private Integer cohort;
 //    private String[] languages;
 
-    @OneToMany
-    @JoinColumn(name = "developer_id", referencedColumnName = "id")
-    private List<Geekout> geekouts;
+//    @OneToMany(mappedBy = "developer", fetch = FetchType.LAZY)
+//    private List<Geekout> geekouts;
 
     @ManyToMany
     @JoinTable(
@@ -36,6 +37,7 @@ public class Developer {
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
 
+    @JsonIgnoreProperties("developer")
     public Set<Language> languages = new HashSet<>();
 
     @OneToOne
@@ -43,12 +45,10 @@ public class Developer {
 
     public Developer() {}
 
-    public Developer(String name, String email, Integer cohort, List<Geekout> geekouts, Set<Language> languages) {
+    public Developer(String name, String email, Integer cohort) {
         this.name = name;
         this.email = email;
         this.cohort = cohort;
-        this.geekouts = geekouts;
-        this.languages = languages;
     }
 
     public Long getId() {
@@ -83,13 +83,13 @@ public class Developer {
         this.cohort = cohort;
     }
 
-    public List<Geekout> getGeekouts() {
-        return geekouts;
-    }
-
-    public void setGeekouts(List<Geekout> geekouts) {
-        this.geekouts = geekouts;
-    }
+//    public List<Geekout> getGeekouts() {
+//        return geekouts;
+//    }
+//
+//    public void setGeekouts(List<Geekout> geekouts) {
+//        this.geekouts = geekouts;
+//    }
 
     public Set<Language> getLanguages() {
         return languages;

@@ -28,6 +28,11 @@ public class DeveloperController {
         return repository.findAll();
     }
 
+    @GetMapping("/lang/{langid}")
+    public List<Developer> getDevsByLanguage(@PathVariable Long landId) {
+        return repository.findAllByLanguages_id(langid);
+    }
+
     @GetMapping("/cohort/{cohort}")
     public ResponseEntity<List<Developer>> getDevelopersByCohort(@PathVariable Integer cohort) {
         return new ResponseEntity<>(repository.findAllByCohort(cohort, Sort.by("name")), HttpStatus.OK);
@@ -55,6 +60,19 @@ public class DeveloperController {
          */
         Developer developer = repository.findById(dev.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         // check if developer has an avatar and if so, delete or modify existing avatar before creating new.
+//        if(developer.getAvatar() != null) {
+//            Avatar oldAvatar = developer.getAvatar();
+//            developer.setAvatar(null);
+//            avatarRepository.delete(oldAvatar);
+//        }
+
+        if(developer.getAvatar() != null) {
+                Avatar avatar = developer.getAvatar();
+                avatar.setUrl(dev.getAvatar().getUrl());
+                avatarRepository.save(avatar);
+                return developer;
+    }
+
         Avatar avatar = avatarRepository.save(dev.getAvatar());
         developer.setAvatar(avatar);
         return repository.save(developer);

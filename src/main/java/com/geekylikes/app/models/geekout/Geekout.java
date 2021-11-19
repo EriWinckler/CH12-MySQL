@@ -1,6 +1,7 @@
 package com.geekylikes.app.models.geekout;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.geekylikes.app.models.developer.Developer;
 
@@ -20,6 +21,7 @@ public class Geekout {
     //post creator
     @ManyToOne
     @JoinColumn(name = "developer_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"languages", "email", "avatar"})
     private Developer developer;
 
     private String title;
