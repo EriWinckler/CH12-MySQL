@@ -106,4 +106,6 @@ public class Developer {
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
     }
+
+
 }

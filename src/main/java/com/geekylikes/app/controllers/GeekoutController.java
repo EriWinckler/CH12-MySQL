@@ -1,6 +1,9 @@
 package com.geekylikes.app.controllers;
 
+import com.geekylikes.app.models.approve.Approve;
+import com.geekylikes.app.models.developer.Developer;
 import com.geekylikes.app.models.geekout.Geekout;
+import com.geekylikes.app.repositories.ApproveRepository;
 import com.geekylikes.app.repositories.GeekoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,11 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class GeekoutController {
     @Autowired
     private GeekoutRepository repository;
+
+    @Autowired
+    private ApproveRepository approveRepository;
 
     @GetMapping
     public ResponseEntity<Iterable<Geekout>> getAll() {
@@ -24,6 +31,19 @@ public class GeekoutController {
         System.out.println(geekout.getDeveloper().getId());
 
         return new ResponseEntity<>(repository.save(geekout), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/like/{id}")
+    public ResponseEntity<Geekout> likeById(@PathVariable Long id,
+                                            @RequestBody Developer developer) {
+        Optional<Geekout> geekout = repository.findById(id);
+        if(geekout.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        Approve newApproval = new Approve(developer, geekout.get());
+        approveRepository.save(newApproval);
+        return new ResponseEntity<>(geekout.get(), HttpStatus.CREATED);
     }
 
 //    @PutMapping("/{id}")
